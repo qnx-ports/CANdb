@@ -1,5 +1,5 @@
 # DBC Grammar
-grammar                 <- spacing _ version _ comment* ns_comment bs? _ (bu / bu_sl)? _ val_table? _ message* _ bo_tx_bu* _ cm* cm_bu* _ (cm_bo _ / cm_sg _)* _ ev* _ (ba_def_str / ba_def_num / ba_def_enum / ba_def_rel)* _ (ba_def_def / ba_def_def_rel)* _ ba* _ ba_bu* _ ba_bo* _ ba_sg* _ ba_rel* vals* sig_val* _ EndOfFile
+grammar                 <- spacing _ version _ comment* ns_comment bs? _ (bu / bu_sl)? _ val_table? _ message* _ bo_tx_bu* _ cm* _ cm_bu* _ (cm_bo _ / cm_sg _)* _ ev* _ (ba_def_str / ba_def_num / ba_def_enum / ba_def_rel)* _ (ba_def_def / ba_def_def_rel)* _ ba* _ ba_bu* _ ba_bo* _ ba_sg* _ ba_rel* _ vals* _ sig_val* _ cm* _ EndOfFile
 
 spacing                 <- (s / comment)*
 ns_comment              <- (ns? / comment)? NewLine*
@@ -9,7 +9,7 @@ bs                      <- < 'BS_' s* ':' s* NewLine symbol_name* > NewLine
 bu                      <- < 'BU_' s* ':' s* NewLine symbol_name* > NewLine
 bu_sl                   <- < 'BU_' s* ':' s* TOKEN (s* TOKEN)* > NewLine
 val_table               <- val_entry* NewLine
-message                 <- 'BO_' s* number s* TOKEN ':' s number s TOKEN _ signal* (TrailingSpace / _ )
+message                 <- 'BO_' s* number s* TOKEN s* ':' s number s TOKEN _ signal* (TrailingSpace / _ )
 bo_tx_bu                <- < 'BO_TX_BU_' s* number s* ':' s* ECU_TOKEN (',' ECU_TOKEN)* ';' > NewLine
 cm                      <- < 'CM_' s* phrase > ';' NewLine
 cm_bu                   <- < 'CM_' s* 'BU_' s* TOKEN s* phrase > ';' NewLine
@@ -35,7 +35,7 @@ vals                    <- < 'VAL_' s* number s* TOKEN s* number s* phrase s* (n
 comment                 <- '//' (!NewLine .)* NewLine
 sig_val                 <- < 'SIG_VALTYPE_' s* number s* TOKEN s* ':' s* number ';' > NewLine
 
-signal                  <- < s* 'SG_' s* TOKEN s* mux? mux_ndx? s* ':' s* number '|' number '@' number sig_sign s* '(' number ',' s* number ')' s* '[' number '|' number ']' s* phrase s* ECU_TOKEN (',' ECU_TOKEN)* > NewLine
+signal                  <- < s* 'SG_' s* TOKEN s* mux? mux_ndx? s* ':' s* number '|' number '@' number sig_sign s* '(' number ',' s* number ')' s* '[' number '|' number ']' s* phrase s* ECU_TOKEN (',' ECU_TOKEN)* > s* NewLine
 val_entry               <- < 'VAL_TABLE_' s* TOKEN s (number_phrase_pair)* ';' > NewLine
 number_phrase_pair      <- number s phrase s
 phrase                  <- < '"' (escaped_quote / string_char)* '"' >
@@ -48,7 +48,7 @@ ECU_TOKEN               <- [a-zA-Z0-9'_']+
 ENUM_VAL                <- (!';' .)+
 number                  <- double / integer
 integer                 <- < sign? [0-9]+ > _
-double                   <- < sign? ([0-9]+'.')?[0-9]+('E' sign [0-9]+)? > _
+double                   <- < sign? ([0-9]+'.')?[0-9]+([Ee] sign [0-9]+)? > _
 symbol_name             <- < s* TOKEN > NewLine
 mux                     <- 'M'
 mux_ndx                 <- 'm'< [0-9]+ >

@@ -6,3 +6,6 @@ build*
 
 # VIM swap files
 *.swp
+
+# VSCode settings folder
+.vscode

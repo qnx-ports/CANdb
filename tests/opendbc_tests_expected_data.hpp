@@ -21,7 +21,7 @@ namespace tesla_dbc {
               "BO_TX_BU_", "BA_DEF_REL_", "BA_REL_", "BA_DEF_DEF_REL_",
               "BU_SG_REL_", "BU_EV_REL_", "BU_BO_REL_", "SG_MUL_VAL_" };
     const strings bs{};
-    const strings bu{ "NEO", "MCU", "GTW", "EPAS", "DI", "ESP", "SBW", "STW" };
+    const strings bu{ "NEO", "MCU", "GTW", "EPAS", "DI", "ESP", "SBW", "STW", "APP", "DAS", "XXX" };
 }; // namespace tesla_dbc
 
 const std::map<std::string, Data> dbc_data{ std::make_pair("tesla_can.dbc",
